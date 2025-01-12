@@ -33,13 +33,13 @@ unsigned short task_solver(char msg[], int msg_len)
 
     if (msg_len == 0)
     {
-        printf("Error: msg length is 0.\n");
+        // printf("Error: msg len is 0.\n");
         return 1;
     }
 
     if (msg_len > 31)
     {
-        printf("Error: msg length is more than 31.\n");
+        // printf("Error: msg length is more than 31.\n");
         return 1;
     }
 
@@ -63,19 +63,19 @@ unsigned short task_solver(char msg[], int msg_len)
     }
     else
     {
-        printf("Error: starts not with a wrong symbol or too short.\n");
+        // printf("Error: starts not with a wrong symbol or too short.\n");
         return 1;
     }
 
 
     if (i >= msg_len) {
-        printf("Error: first number ends too early.\n");
+        // printf("Error: first number ends too early.\n");
         return 1;
     }
 
     if (msg[i] != '.' && msg[i] != '+' && msg[i] != '-' && msg[i] != '*' && msg[i] != '/')
     {
-        printf("Error: wrong symbol after first number (123x).\n");
+        // printf("Error: wrong symbol after first number (123x).\n");
         return 1;
     }
     if (msg[i] == '.')
@@ -93,7 +93,7 @@ unsigned short task_solver(char msg[], int msg_len)
                 break;
             else  // not a number and not a mark
             {
-                printf("Error: wrong symbol after num1 (12.34x).\n");
+                // printf("Error: wrong symbol after num1 (12.34x).\n");
                 return 1;
             }
 
@@ -102,26 +102,26 @@ unsigned short task_solver(char msg[], int msg_len)
     }
 
     if (i >= msg_len) {
-        printf("Error: too short task (12.34).\n");
+        // printf("Error: too short task (12.34).\n");
         return 1;
     }
     if (msg[i] != '+' && msg[i] != '-' && msg[i] != '*' && msg[i] != '/')
     {
-        printf("Error: symbol is not a operator after num1 (12.34x).\n");
+        // printf("Error: symbol is not a operator after num1 (12.34x).\n");
         return 1;
     }
 
     // writing an operator
     i++;
     if (i >= msg_len) {
-        printf("Error: too short task (12.34*).\n");
+        // printf("Error: too short task (12.34*).\n");
         return 1;
     }
 
     if (msg[i] == '(')
     {
         if (bracket_open == true) {
-            printf("Error: two opened brackets ( (( ).\n");
+            // printf("Error: two opened brackets ( (( ).\n");
             return 1;
         }
         bracket_open = true;
@@ -129,14 +129,14 @@ unsigned short task_solver(char msg[], int msg_len)
 
         i++;
         if (i >= msg_len) {
-            printf("Error: too short task ( 12.34*( ).\n");
+            // printf("Error: too short task ( 12.34*( ).\n");
             return 1;
         }
     }
 
     if ('0' > msg[i] || msg[i] > '9')
     {
-        printf("Error: not a number after operator (12.34+x).\n");
+        // printf("Error: not a number after operator (12.34+x).\n");
         return 1;
     }
 
@@ -152,19 +152,19 @@ unsigned short task_solver(char msg[], int msg_len)
 
     if (i >= msg_len) {
         if (bracket_open == false) {  // if there are no brackets then it has format "1.0+2" correct
-            printf("[Format validation is OK]\n");
+            // printf("[Format validation is OK]\n");
             return 0;
         }
         else
         {
-            printf("Error: too short ( (1.0+2) ).\n");
+            // printf("Error: too short ( (1.0+2) ).\n");
             return 1;
         }
     }
 
     if (msg[i] != ')' && msg[i] != '.' && msg[i] != '+' && msg[i] != '-' && msg[i] != '*' && msg[i] != '/')
     {
-        printf("Error: wrong symbol after second number (12.0+12x).\n");
+        // printf("Error: wrong symbol after second number (12.0+12x).\n");
         return 1;
     }
 
@@ -176,13 +176,13 @@ unsigned short task_solver(char msg[], int msg_len)
             bracket_closed = true;
             i++;
             if (i >= msg_len) {
-                printf("Error: can't use such brackets format ( (1.2+2) ).\n");
+                // printf("Error: can't use such brackets format ( (1.2+2) ).\n");
                 return 1;
             }
         }
         else
         {
-            printf("Error: closing brackets without opening ( 1.2+0.2) ).\n");
+            // printf("Error: closing brackets without opening ( 1.2+0.2) ).\n");
             return 1;
         }
     }
@@ -191,7 +191,7 @@ unsigned short task_solver(char msg[], int msg_len)
         num2_point = true;
         i++;
         if (i >= msg_len) {
-            printf("Error: ends after point (12.0+12.).\n");
+            // printf("Error: ends after point (12.0+12.).\n");
             return 1;
         }
 
@@ -212,20 +212,20 @@ unsigned short task_solver(char msg[], int msg_len)
                     bracket_closed = true;
                     i++;
                     if (i >= msg_len) {
-                        printf("Error: can't use such brackets format ( (1.2+0.2) ).\n");
+                        // printf("Error: can't use such brackets format ( (1.2+0.2) ).\n");
                         return 1;
                     }
                     break;
                 }
                 else
                 {
-                    printf("Error: closing brackets without opening ( 1.2+0.2) ).\n");
+                    // printf("Error: closing brackets without opening ( 1.2+0.2) ).\n");
                     return 1;
                 }
             }
             else  // not a number, not a mark, not a ')'
             {
-                printf("Error: wrong symbol after num2 (1.2+3.4x).\n");
+                // printf("Error: wrong symbol after num2 (1.2+3.4x).\n");
                 return 1;
             }
 
@@ -237,28 +237,28 @@ unsigned short task_solver(char msg[], int msg_len)
     {
         if (bracket_open == true)
         {
-            printf("Error: bracket is not closed ( (1.2+3.4 ).\n");
+            // printf("Error: bracket is not closed ( (1.2+3.4 ).\n");
             return 1;
         }
-        printf("[Format validation is OK]\n");
+        // printf("[Format validation is OK]\n");
         return 0;
     }
     if (msg[i] != '+' && msg[i] != '-' && msg[i] != '*' && msg[i] != '/')
     {
-        printf("Error: wrong symbol after num2 or num2).\n");
+        // printf("Error: wrong symbol after num2 or num2).\n");
         return 1;
     }
 
     // writing an operator
     i++;
     if (i >= msg_len) {
-        printf("Error: too short task (1.2+3.4+).\n");
+        // printf("Error: too short task (1.2+3.4+).\n");
         return 1;
     }
 
     if ('0' < msg[i] && msg[i] > '9')
     {
-        printf("Error: not a number after operator (1.2+3.4+x).\n");
+        // printf("Error: not a number after operator (1.2+3.4+x).\n");
         return 1;
     }
 
@@ -276,12 +276,12 @@ unsigned short task_solver(char msg[], int msg_len)
     {
         if (bracket_closed == true || bracket_open == false)
         {
-            printf("[Format validation is OK]\n");
+            // printf("[Format validation is OK]\n");
             return 0;
         }
         else
         {
-            printf("Error: wrong brackets format (e.g. not closed).\n");
+            // printf("Error: wrong brackets format (e.g. not closed).\n");
             return 1;
         }
     }
@@ -293,14 +293,14 @@ unsigned short task_solver(char msg[], int msg_len)
             bracket_pos4 = true;
             i++;
             if (msg_len != i) {
-                printf("Error: symbols after last close bracket ( (1+2+3)x ).\n");
+                // printf("Error: symbols after last close bracket ( (1+2+3)x ).\n");
                 return 1;
             }
-            printf("[Format validation is OK]\n");
+            // printf("[Format validation is OK]\n");
             return 0;
         }
         else {
-            printf("Error: wrong close bracket (not opened or already closed).\n");
+            // printf("Error: wrong close bracket (not opened or already closed).\n");
             return 1;
         }
         i++;
@@ -311,7 +311,7 @@ unsigned short task_solver(char msg[], int msg_len)
         num3_point = true;
         i++;
         if (i >= msg_len) {
-            printf("Error: ends after point (1.2+3.4+5.).\n");
+            // printf("Error: ends after point (1.2+3.4+5.).\n");
             return 1;
         }
 
@@ -329,20 +329,20 @@ unsigned short task_solver(char msg[], int msg_len)
                     bracket_pos4 = true;
                     i++;
                     if (msg_len != i) {
-                        printf("Error: symbols after last close bracket ( (1+2+3)x ).\n");
+                        // printf("Error: symbols after last close bracket ( (1+2+3)x ).\n");
                         return 1;
                     }
-                    printf("[Format validation is OK]\n");
+                    // printf("[Format validation is OK]\n");
                     return 0;
                 }
                 else {
-                    printf("Error: wrong close bracket (not opened or already closed).\n");
+                    // printf("Error: wrong close bracket (not opened or already closed).\n");
                     return 1;
                 }
             }
             else  // not a number, not a ')'
             {
-                printf("Error: wrong symbol after num3 (1.2+3.4+5.6x).\n");
+                // printf("Error: wrong symbol after num3 (1.2+3.4+5.6x).\n");
                 return 1;
             }
 
@@ -354,26 +354,26 @@ unsigned short task_solver(char msg[], int msg_len)
     {
         if ((bracket_open == false && bracket_closed == false) || (bracket_open == true && bracket_closed == true))
         {
-            printf("[Format validation is OK]\n");
+            // printf("[Format validation is OK]\n");
             return 0;
         }
         else
         {
-            printf("Error: wrong brackets format.\n");
+            // printf("Error: wrong brackets format.\n");
             return 1;
         }
     }
     else
     {
-        printf("Error: wrong symbols after the task ( (1+2+3)x ).\n");
+        // printf("Error: wrong symbols after the task ( (1+2+3)x ).\n");
         return 1;
     }
 }
 
-/*int main() {
+int main() {
     char msg[100];
-    printf("Validation test.\n");
-    printf("Enter the task: ");
+    // printf("Validation test.\n");
+    // printf("Enter the task: ");
     fgets(msg, sizeof(msg), stdin);
 
     msg[strcspn(msg, "\n")] = '\0';
@@ -382,7 +382,10 @@ unsigned short task_solver(char msg[], int msg_len)
     int msg_len = strlen(msg);
 
     short int errors = task_solver(msg, msg_len);
-    printf("Errors: %d", errors);
+    if (errors == 1)
+        printf("WA");  // Wrong Answer
+    else
+        printf("OK");  // Correct
 
     return 0;
-}*/
+}

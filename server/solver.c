@@ -94,9 +94,6 @@ struct SolverData calc_three_nums(double n1, double n2, double n3, char o1, char
         sd = calc_two_nums(n1, temp_res, o1);
         return sd;  // whatever error
     }
-
-    sd.error = 1;  // Wrong format
-    printf("Error: wrong brackets positions.\n");
     return sd;
 }
 
@@ -113,6 +110,7 @@ struct SolverData task_solver(char msg[], int msg_len)
     solver_data.error = 0;
 
     unsigned short i = 0;  // current pos
+    // bool bracket_open = false, bracket_closed = false;
     bool bracket_pos1 = false, bracket_pos2 = false, bracket_pos3 = false, bracket_pos4 = false;
     //  a x b x c
     // 1   2 3   4
@@ -125,14 +123,18 @@ struct SolverData task_solver(char msg[], int msg_len)
     }
 
     if (msg[i] == '(') {
+        // bracket_open = true;
         bracket_pos1 = true;
         i++;
     }
 
     // declaring num1
+    // bool num1_started = false;
+    // bool num1_point = false;
     int decimal_amount = 1;
     double num1 = 0;
 
+    // num1_started = true;
     // writing while numbers
     while (i < msg_len && i < msg_len && '0' <= msg[i] && msg[i] <= '9') {
         num1 = num1 * 10 + (msg[i] - '0');
@@ -141,6 +143,7 @@ struct SolverData task_solver(char msg[], int msg_len)
 
     if (msg[i] == '.')
     {
+        //num1_point = true;
         i++;
         // continue collecting num1 after point
         while (i < msg_len)
@@ -164,15 +167,19 @@ struct SolverData task_solver(char msg[], int msg_len)
 
     if (msg[i] == '(')
     {
+        // bracket_open = true;
         bracket_pos2 = true;
         i++;
     }
 
     // declaring num2
+    // bool num2_started = false;
+    // bool num2_point = false;
     decimal_amount = 1;
     double num2 = 0;
 
     // msg[i] is 100% a number and i < msg_len (has been checked earlier)
+    //num2_started = true;
     // writing while numbers
     while (i < msg_len && i < msg_len && '0' <= msg[i] && msg[i] <= '9') {
         num2 = num2 * 10 + (msg[i] - '0');
@@ -182,7 +189,7 @@ struct SolverData task_solver(char msg[], int msg_len)
     if (i >= msg_len) {
         solver_data = calc_two_nums(num1, num2, oper1);
         if (solver_data.error == 2) {
-            printf("Error: Division by zero (num1 / num2).\n");
+            // printf("Error: Division by zero (num1 / num2).\n");
         }
         return solver_data;
     }
@@ -190,11 +197,14 @@ struct SolverData task_solver(char msg[], int msg_len)
     if (msg[i] == ')')
     {
         bracket_pos3 = true;
+        // bracket_closed = true;
         i++;
     }
     else if (msg[i] == '.')
     {
+        //num2_point = true;
         i++;
+
         // continue collecting num2 after point
         while (i < msg_len)
         {
@@ -209,6 +219,7 @@ struct SolverData task_solver(char msg[], int msg_len)
             else if (msg[i] == ')')
             {
                 bracket_pos3 = true;
+                // bracket_closed = true;
                 i++;
                 break;
             }
@@ -220,7 +231,7 @@ struct SolverData task_solver(char msg[], int msg_len)
     {
         solver_data = calc_two_nums(num1, num2, oper1);  // 1.2+3.4
         if (solver_data.error == 2) {
-            printf("Error: Division by zero (num1 / num2).\n");
+            // printf("Error: Division by zero (num1 / num2).\n");
         }
         return solver_data;
     }
@@ -231,8 +242,11 @@ struct SolverData task_solver(char msg[], int msg_len)
     i++;
 
     // declaring num3
+    // bool num3_started = false;
+    // bool num3_point = false;
     decimal_amount = 1;
     double num3 = 0;
+    // num3_started = true;
 
     // writing while numbers
     while (i < msg_len && i < msg_len && '0' <= msg[i] && msg[i] <= '9') {
@@ -244,7 +258,7 @@ struct SolverData task_solver(char msg[], int msg_len)
     {
         solver_data = calc_three_nums(num1, num2, num3, oper1, oper2, bracket_pos1, bracket_pos2, bracket_pos3, bracket_pos4);
         if (solver_data.error == 2) {
-            printf("Error: Division by zero.\n");
+            // printf("Error: Division by zero.\n");
         }
         return solver_data;
     }
@@ -256,7 +270,7 @@ struct SolverData task_solver(char msg[], int msg_len)
 
         solver_data = calc_three_nums(num1, num2, num3, oper1, oper2, bracket_pos1, bracket_pos2, bracket_pos3, bracket_pos4);
         if (solver_data.error == 2) {
-            printf("Error: Division by zero.\n");
+            // printf("Error: Division by zero.\n");
         }
         return solver_data;
         i++;
@@ -264,6 +278,7 @@ struct SolverData task_solver(char msg[], int msg_len)
 
     if (msg[i] == '.')
     {
+        // num3_point = true;
         i++;
 
         // continue collecting num3 after point
@@ -283,7 +298,7 @@ struct SolverData task_solver(char msg[], int msg_len)
 
                 solver_data = calc_three_nums(num1, num2, num3, oper1, oper2, bracket_pos1, bracket_pos2, bracket_pos3, bracket_pos4);
                 if (solver_data.error == 2) {
-                    printf("Error: Division by zero.\n");
+                    // printf("Error: Division by zero.\n");
                 }
                 return solver_data;
             }
@@ -293,7 +308,28 @@ struct SolverData task_solver(char msg[], int msg_len)
 
     solver_data = calc_three_nums(num1, num2, num3, oper1, oper2, bracket_pos1, bracket_pos2, bracket_pos3, bracket_pos4);
     if (solver_data.error == 2) {
-        printf("Error: Division by zero.\n");
+        // printf("Error: Division by zero.\n");
     }
     return solver_data;
+}
+
+
+int main() {
+    char msg[31];
+    // printf("Enter the task: ");
+    fgets(msg, sizeof(msg), stdin);
+
+    msg[strcspn(msg, "\n")] = '\0';
+    remove_spaces(msg);
+    int msg_len = strlen(msg);
+
+    struct SolverData solver_data;
+    solver_data = task_solver(msg, msg_len);
+
+    if (solver_data.error == 0)
+        printf("%f\n", solver_data.result);
+    else
+        printf("WA");  // division by 0
+
+    return 0;
 }
